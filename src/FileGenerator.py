@@ -1,11 +1,13 @@
 import os.path
 import time
 
-from LeagueApi import get_summoner_profile_dict
+from .LeagueApi import get_summoner_profile_dict
 
 
-def generate_diploma(name: str):
+def generate_diploma(name: str, out_path: str = None):
     path = "\\".join(os.path.abspath(__file__).split("\\")[:-2])
+    if out_path is None:
+        out_path = os.path.join(path, "diploma")
 
     d = get_summoner_profile_dict(name)
     with open(os.path.join(path, "template", "Urkunde.tex"), "r", encoding="utf-8") as fp:
@@ -13,13 +15,12 @@ def generate_diploma(name: str):
         for key, value in d.items():
             text = text.replace(f"${key}$", str(value))
 
-        with open(os.path.join(path, "diploma", f"{d['name']}.tex"), "w", encoding="utf-8") as fpw:
+        with open(os.path.join(out_path, f"{d['name']}.tex"), "w", encoding="utf-8") as fpw:
             fpw.write(text)
 
-    path = os.path.join(path, 'diploma')
-    file_path = os.path.join(path, f'{d["name"]}.tex')
+    file_path = os.path.join(out_path, f'{d["name"]}.tex')
     os.system(
-        f"pdflatex -output-directory={path} -shell-escape -synctex=1 -interaction=nonstopmode -jobname={d['name']} -output-format=pdf {file_path}")
+        f"pdflatex -output-directory={out_path} -shell-escape -synctex=1 -interaction=nonstopmode -jobname={d['name']} -output-format=pdf {file_path}")
     time.sleep(5)
 
 

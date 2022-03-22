@@ -1,5 +1,4 @@
 import os
-import datetime
 import pytz
 import cassiopeia
 import cassiopeia as cass
