@@ -23,8 +23,10 @@ def generate_diploma(name: str, out_path: str = None):
     return os.path.join(out_path, f'{d["name"]}.pdf'), d['name']
 
 
-def delete_diploma(name: str):
-    path = "\\".join(os.path.abspath(__file__).split("\\")[:-2])
+def delete_diploma(name: str, path: str = None):
+    if path is None:
+        path = "\\".join(os.path.abspath(__file__).split("\\")[:-2])
+        path = os.path.join(path, "diploma")
     os.remove(f"{os.path.join(path, name)}.aux")
     os.remove(f"{os.path.join(path, name)}.log")
     os.remove(f"{os.path.join(path, name)}.synctex.gz")
