@@ -1,0 +1,4 @@
+cassiopeia==5.0.1
+pytz~=2022.1
+datapipelines~=1.0.7
+merakicommons~=1.0.10
