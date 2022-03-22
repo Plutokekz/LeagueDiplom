@@ -1,5 +1,4 @@
 import os.path
-import time
 
 from .LeagueApi import get_summoner_profile_dict
 
@@ -21,7 +20,7 @@ def generate_diploma(name: str, out_path: str = None):
     file_path = os.path.join(out_path, f'{d["name"]}.tex')
     os.system(
         f"pdflatex -output-directory={out_path} -shell-escape -synctex=1 -interaction=nonstopmode -jobname={d['name']} -output-format=pdf {file_path}")
-    time.sleep(5)
+    return path, d['name']
 
 
 def delete_diploma(name: str):

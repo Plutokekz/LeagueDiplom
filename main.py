@@ -8,7 +8,8 @@ args = parser.parse_args()
 
 
 def main():
-    generate_diploma(args.name, args.output)
+    path, name = generate_diploma(args.name, args.output)
+    print(path)
 
 
 if __name__ == "__main__":
