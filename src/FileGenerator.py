@@ -1,4 +1,6 @@
 import os.path
+import subprocess
+from subprocess import DEVNULL, STDOUT
 
 from .LeagueApi import get_summoner_profile_dict
 
@@ -18,8 +20,10 @@ def generate_diploma(name: str, out_path: str = None):
             fpw.write(text)
 
     file_path = os.path.join(out_path, f'{d["name"]}.tex')
-    os.system(
-        f"pdflatex -output-directory={out_path} -shell-escape -synctex=1 -interaction=nonstopmode -jobname={d['name']} -output-format=pdf {file_path}")
+    # os.system(f"pdflatex -output-directory={out_path} -shell-escape -synctex=1 -interaction=nonstopmode"
+    #          f" -jobname={d['name']} -output-format=pdf {file_path}")
+    subprocess.run(f'pdflatex -output-directory={out_path} -shell-escape -synctex=1 -interaction=nonstopmode '
+                   f'-jobname={d["name"]} -output-format=pdf {file_path}', stdout=DEVNULL, stderr=STDOUT)
     return os.path.join(out_path, f'{d["name"]}.pdf'), d['name']
 
 

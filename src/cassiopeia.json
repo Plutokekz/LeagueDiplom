@@ -1,0 +1,8 @@
+{
+  "logging": {
+    "print_calls": false,
+    "print_riot_api_key": false,
+    "default": "WARNING",
+    "core": "WARNING"
+}
+}

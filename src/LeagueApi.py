@@ -7,6 +7,9 @@ from cassiopeia import GameMode
 from cassiopeia.core.match import Participant
 from merakicommons.container import SearchError
 
+path = "\\".join(os.path.abspath(__file__).split("\\")[:-1])
+cass.apply_settings(os.path.join(path, "cassiopeia.json"))
+
 
 class SummonerNotFoundException(Exception):
 
