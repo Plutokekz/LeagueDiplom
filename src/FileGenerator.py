@@ -6,7 +6,7 @@ from .LeagueApi import get_summoner_profile_dict
 
 
 def generate_diploma(name: str, out_path: str = None):
-    path = "\\".join(os.path.abspath(__file__).split("\\")[:-2])
+    path = os.sep.join(os.path.abspath(__file__).split(os.sep)[:-2])
     if out_path is None:
         out_path = os.path.join(path, "diploma")
 
@@ -20,16 +20,15 @@ def generate_diploma(name: str, out_path: str = None):
             fpw.write(text)
 
     file_path = os.path.join(out_path, f'{d["name"]}.tex')
-    # os.system(f"pdflatex -output-directory={out_path} -shell-escape -synctex=1 -interaction=nonstopmode"
-    #          f" -jobname={d['name']} -output-format=pdf {file_path}")
-    subprocess.run(f'pdflatex -output-directory={out_path} -shell-escape -synctex=1 -interaction=nonstopmode '
-                   f'-jobname={d["name"]} -output-format=pdf {file_path}', stdout=DEVNULL, stderr=STDOUT)
+    subprocess.Popen(["pdflatex", "-shell-escape", "-synctex=1", "-interaction=nonstopmode", f"-jobname={d['name']}",
+                      f"-output-format=pdf", f"-output-directory={out_path}",
+                      f"{file_path}"], stdout=DEVNULL, stderr=STDOUT)
     return os.path.join(out_path, f'{d["name"]}.pdf'), d['name']
 
 
 def delete_diploma(name: str, path: str = None):
     if path is None:
-        path = "\\".join(os.path.abspath(__file__).split("\\")[:-2])
+        path = f"{os.sep}".join(os.path.abspath(__file__).split(os.sep)[:-2])
         path = os.path.join(path, "diploma")
     os.remove(f"{os.path.join(path, name)}.aux")
     os.remove(f"{os.path.join(path, name)}.log")

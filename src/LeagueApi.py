@@ -1,4 +1,6 @@
 import os
+from typing import Tuple, Any
+
 import pytz
 import cassiopeia
 import cassiopeia as cass
@@ -7,7 +9,7 @@ from cassiopeia import GameMode
 from cassiopeia.core.match import Participant
 from merakicommons.container import SearchError
 
-path = "\\".join(os.path.abspath(__file__).split("\\")[:-1])
+path = f"{os.sep}".join(os.path.abspath(__file__).split(os.sep)[:-1])
 cass.apply_settings(os.path.join(path, "cassiopeia.json"))
 
 
@@ -26,11 +28,12 @@ def get_summoner(name: str, region: str = "EUW") -> cassiopeia.Summoner:
         raise SummonerNotFoundException(name, "Summoner with the given name not found in the region")
 
 
-def save_profile_image(summoner: cassiopeia.Summoner) -> str:
-    path = "\\".join(os.path.abspath(__file__).split("\\")[:-2])
-    with open(os.path.join(path, "diploma", "images", "tmp.png"), "wb") as fp:
+def save_profile_image(summoner: cassiopeia.Summoner) -> Tuple[Any, str]:
+    _path = f"{os.sep}".join(os.path.abspath(__file__).split(os.sep)[:-2])
+    _path = os.path.join(_path, "diploma", "images", "tmp.png")
+    with open(_path, "wb") as fp:
         summoner.profile_icon.image.save(fp)
-    return summoner.profile_icon.name
+    return summoner.profile_icon.name if summoner.profile_icon.name else "", _path
 
 
 def get_summoner_division(summoner: cassiopeia.Summoner) -> (str, str):
@@ -72,11 +75,11 @@ def get_last_match(summoner: cassiopeia.Summoner):
 
 def get_summoner_profile_dict(name: str) -> dict:
     summoner = get_summoner(name)
-    image_name = save_profile_image(summoner)
+    image_name, _path = save_profile_image(summoner)
     rank = get_summoner_division(summoner)
     data = {'level': summoner.level,
             'name': summoner.name,
-            'image': "images/tmp.png",
+            'image': _path.replace("\\", "/"),
             'image_name': image_name,
             'division': rank[0],
             'tier': rank[1]}
